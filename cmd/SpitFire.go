@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/IcaroTARique/stress-cli/internal/api"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -31,8 +32,14 @@ func runCreate(request api.Request) RunEFunc {
 		request.SetJobs(jobs)
 		request.SetWorkers(workers)
 
+		done := make(chan struct{})
+		go showLoading(done)
+
 		res := request.GoRequest(verbose)
 
+		close(done)
+
+		fmt.Print("\r                    \r")
 		fmt.Println("Duration: ", res.TotalTime)
 		fmt.Println("Amount of requests: ", res.ReqAmmount)
 		fmt.Println("Code \t Ammount")
@@ -41,6 +48,22 @@ func runCreate(request api.Request) RunEFunc {
 		}
 
 		return nil
+	}
+}
+
+func showLoading(done <-chan struct{}) {
+	loadingChars := []rune{'|', '/', '-', '\\'}
+	i := 0
+	for {
+		select {
+		case <-done:
+			fmt.Print("\r")
+			return
+		default:
+			fmt.Printf("\rLoading... %c", loadingChars[i])
+			i = (i + 1) % len(loadingChars)
+			time.Sleep(100 * time.Millisecond)
+		}
 	}
 }
 

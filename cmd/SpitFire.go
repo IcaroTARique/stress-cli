@@ -33,7 +33,9 @@ func runCreate(request api.Request) RunEFunc {
 		request.SetWorkers(workers)
 
 		done := make(chan struct{})
-		go showLoading(done)
+		if verbose == false {
+			go showLoading(done)
+		}
 
 		res := request.GoRequest(verbose)
 

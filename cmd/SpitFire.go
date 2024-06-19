@@ -24,8 +24,8 @@ func runCreate(request api.Request) RunEFunc {
 	return func(cmd *cobra.Command, args []string) error {
 
 		url, _ := cmd.Flags().GetString("url")
-		jobs, _ := cmd.Flags().GetInt("jobs")
-		workers, _ := cmd.Flags().GetInt("workers")
+		jobs, _ := cmd.Flags().GetInt("requests")
+		workers, _ := cmd.Flags().GetInt("concurrency")
 		verbose, _ := cmd.Flags().GetBool("verbose")
 
 		request.SetUrl(url)
@@ -73,8 +73,8 @@ func init() {
 	createCmd := newCreateCmd(GetActionApi())
 	rootCmd.AddCommand(createCmd)
 	createCmd.Flags().StringP("url", "u", "", "URL to be requested")
-	createCmd.Flags().IntP("jobs", "j", 1, "Number of jobs to be executed")
-	createCmd.Flags().IntP("workers", "w", 1, "Number of workers to be executed")
+	createCmd.Flags().IntP("requests", "r", 1, "Number of requests to be executed")
+	createCmd.Flags().IntP("concurrency", "c", 1, "Number of workers to be executed")
 	createCmd.Flags().BoolP("verbose", "v", false, "Verbose mode")
 	createCmd.MarkFlagRequired("url")
 

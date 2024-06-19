@@ -11,8 +11,8 @@ Use with docker building the image
 ### Flags
 SpitFire uses the following flags:
 - **-u or --url**: The URL to stress test
-- **-j or --job**: The number of jobs to run
-- **-w or --workers**: The number of workers to run
+- **-r or --requests**: The number of jobs to run
+- **-c or --concurrency**: The number of workers to run
 - **-v or --verbose**: To see the internal work
 
 ### Verbose 
